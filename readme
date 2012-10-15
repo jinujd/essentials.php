@@ -1,0 +1,43 @@
+essentials.php  is the opensource project aimed at sharing genereal purpose php code.
+
+Help for current version
+------------------------
+1)sql_interface
+    sql_interface is a class defined in essentials to make MySQL database access more easier.
+	First we need to create the object of the class using the following constructor
+	$sql = new sql_interface($db_uname,$db_pwd,$db_host);
+	 , where  $db_uname the username for MySQL database,$db_pwd is the password for MySQL batabase and $db_host is the hostname.
+	 We suggest to include this in a separate file connect.php,so that everytime we just need to include that file for connection.
+	 
+	 
+	 a)Creating a database.
+	  To create a new database , we have to use the add_db(<dbName>) function.For ex if let 'myNewDb' be your database name.Then it can be created as
+	  $sql->add_db('myNewDb');
+	  The database will not be created ,if there exists a database with same name.
+	  After creation of the database ,the newly created database is selected implicitely.
+	 b)Selecting a different database.
+	     To select a different database we use the db(<dbName>) function.Suppose we need to select the database named 'myNewDb1'.It can be done as follows.
+      $sql->db('myNewDb1');
+	  Returns false if database does not exist
+     c)Creating a table.
+        A table can be created inside the selected database using the add_table(<tableName>,<details>) function
+        For example suppose we need to create a table  named 'myTable' with following columns.
+        regNo int, username text ,dob DATE
+		Then it can be done as
+        $sql->add_table('myTable','regNo int, username text ,dob DATE');
+        After the creation of the table,the newly created table will be selected automatically , for further access. 
+	    The table will not be created ,if the table already exists		
+	d)Creating multiple tables
+	     Multiple tables can be created using the add_tables(<tables>) function.
+         For example if we need to create the following two tables
+		 table1 - regNo int, username text ,dob DATE
+		 table2 - regNo int
+		 It can be done using the query.
+		 $sql->add_tables(array('table1' => 'regNo int, username text ,dob DATE','table2' => 'regNo int' ));
+	e)Selecting a different table.
+	    A different table can be selected using the function table(<tableName>);
+		For ex: to select table named 'myTable1',the code will be
+		$sql->table('myTable1');
+	f)Creating a view
+	    A view can be created using create_view(<viewName>,<result>).For example if we need to 
+		
