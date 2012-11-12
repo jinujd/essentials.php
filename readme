@@ -1,6 +1,6 @@
 essentials.php  is the opensource project aimed at sharing genereal purpose php code.
 
-Help for current version
+Manual for current version
 ------------------------
 1)sql_interface
     sql_interface is a class defined in essentials to make MySQL database access more easier.
@@ -68,6 +68,20 @@ Help for current version
 			  $sql->table('myTable')->select(array('name','age'),'WHERE age>10 order by age');
 			   selects columns name and age for records satisfying the condition.
 	 j)Fetching the selected records
+<<<<<<< HEAD
+=======
+               Selected records can be fetched using the fetch() function.
+                  It returns a row from the selected result set and returns it. If there is only one column in a row ,the value 
+of the column willl be returned.Other wise an array ,is returned whose ith element is the value of ith column in the result
+.After each fetch ,the row pointer will be updated to the next row in the result.If there is no rows remaining,fetch()
+will return false.
+ex:$sql->table('myTable')->select(array('*'),'WHERE age>10 order by age');
+$sql->fetch() 
+    OR 
+$sql->table('myTable')->select(array('*'),'WHERE age>10 order by age')->fetch()
+    will fetch the first row from the selected result
+
+>>>>>>> 19fb9a8df4062376bb4e108eb580590ca58d0a69
 		
 			
 	f)Creating a view
