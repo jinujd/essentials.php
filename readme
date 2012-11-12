@@ -38,6 +38,38 @@ Help for current version
 	    A different table can be selected using the function table(<tableName>);
 		For ex: to select table named 'myTable1',the code will be
 		$sql->table('myTable1');
+	f)Adding a record to a table
+	   A record can be added to a table using add_record(<values>) function
+	   Values is an array storing values for columns.It can be of two types 
+			   1) if it is a normal array ,each element are considered as values of the column names in the order they appear in the table
+			   2) it can be specified as an associative array as ["<column name1>" => <value1>,"<column name2>" => <value2>,...]
+			   
+	g)Deleting record(s)
+	    Record(s) can be deleted from a table using the drop_records(<condition>).If no condition is given ,all records will be deleted from the table.
+         ex:$sql->table('myTable1')->drop_records('age > 30');
+              will remove all records from the table 'myTable1' having the value of column named 'age' is >30
+			 $sql->table('myTable1')->drop_records(); 
+			   will remove all records from the table 
+    h)Updating record(s)
+        Records can be updated using the update_record(<vales>,<condition>)	.
+		$values = [],associative array in the format [<column name>=><value>,<column name1>=><value1>,...].
+		If condition is not given,all records will be updated
+		ex:$sql->table('myTable1')->update_records(array('age'=>45,'name'=>db_str('unknown')));
+		      updates the column age as 45 and name as 'unknown' for every record
+			  [Note:Columns with string(VARCHAR,TEXT)/Date data types should be converted to a database string using the function db_str().
+			  Otherwise error will occur ]
+			$sql->table('myTable1')->update_records(array('age'=>45,'name'=>db_str('unknown')),'age > 40');
+		      updates the column age as 45 and name as 'unknown' for every record with value of column 'age' > 40
+     i)Selecting(Filtering recors from a table)
+	     Records can be selected using the select(<columns>,<condition>) function.
+              <columns> is array stroing names of columns to select.If condition is not given, all records in the specified columns will be selected.
+			  ex:$sql->table('myTable')->select(array('*'),'WHERE age>10 order by age');
+			  selects all columns for records satisfying the condition.
+			  $sql->table('myTable')->select(array('name','age'),'WHERE age>10 order by age');
+			   selects columns name and age for records satisfying the condition.
+	 j)Fetching the selected records
+		
+			
 	f)Creating a view
 	    A view can be created using create_view(<viewName>,<result>).For example if we need to 
 		
