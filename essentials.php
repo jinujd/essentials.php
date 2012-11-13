@@ -279,38 +279,41 @@
 	    $str = '"'.str_replace('"','\"',$str).'"';
 		return $str;
 	}
-	function line_input($attributes = array()) {
+	function line_input($attributes = array('class'=>'line_input')) {
 	 //returns html for text box.attributes is array(attribute1 => value,attribute2 => value....)
 	 $attributes['type'] = 'text';
 	 $ret = html(array('input'=>array('attributes' => $attributes)));
 	 return $ret;
 	}
-	function text_input($attributes = array('value'=>'')) {//returns html for a textarea with attributes array(attr1=>val,...)...attribute named value is innerHTML of textarea
+	function  label($content='',$attributes = array('class'=>'label')) {//returns html for a label tag with content as first argument attributes array(attr1=>val,...)attribute named value is innerHTML of label
+		return html(array('label'=>array('content'=>$content,'attributes'=>$attributes)));    
+	}
+	function text_input($attributes = array('value'=>'','class'=>'text_input')) {//returns html for a textarea with attributes array(attr1=>val,...)...attribute named value is innerHTML of textarea
 	    $content = $attributes['value'];
 	    unset($attributes['value']);
 	    return html(array('textarea'=>array('content'=>$content,'attributes' => $attributes)));
 	}
-	function button($attributes = array()) {//returns html of a button with attributes in array(attr1=>val1,...)
+	function button($attributes = array('class'=>'button')) {//returns html of a button with attributes in array(attr1=>val1,...)
 	    $attributes['type'] = 'button';
         return html(array('input'=>array('attributes'=>$attributes)));	
 	}
-	function submit_button($attributes = array()) {//returns html of a submit  button with attributes in array(attr1=>val1,...)
+	function submit_button($attributes = array('class'=>'submit_button')) {//returns html of a submit  button with attributes in array(attr1=>val1,...)
 	    $attributes['type'] = 'submit';
         return html(array('input'=>array('attributes'=>$attributes)));	
 	}
-	function reset_button($attributes = array()) {//returns html of a reset button with attributes in array(attr1=>val1,...)
+	function reset_button($attributes = array('class'=>'reset_button')) {//returns html of a reset button with attributes in array(attr1=>val1,...)
 	    $attributes['type'] = 'reset';
         return html(array('input'=>array('attributes'=>$attributes)));	
 	}
-	function password($attributes = array()) {//returns html of a password field with attributes in array(attr1=>val1,...)
+	function password($attributes = array('class'=>'password')) {//returns html of a password field with attributes in array(attr1=>val1,...)
 	    $attributes['type'] = 'password';
         return html(array('input'=>array('attributes'=>$attributes)));	
 	}
-	function file_input($attributes = array()) {//returns html of a file upload field with attributes in array(attr1=>val1,...)
+	function file_input($attributes = array('class'=>'file_input')) {//returns html of a file upload field with attributes in array(attr1=>val1,...)
 	    $attributes['type'] = 'file';
         return html(array('input'=>array('attributes'=>$attributes)));	
 	}
-	function checkbox($attributes = array()) {//returns html for checkbox with attributes as array(attr1=>val1,...),checked attribute set to 1 => checkbox is checked
+	function checkbox($attributes = array('class'=>'checkbox')) {//returns html for checkbox with attributes as array(attr1=>val1,...),checked attribute set to 1 => checkbox is checked
 	    if(isset($attributes['checked'])) {
 		    $checked = $attributes['checked'];
 		    if($checked  == 1) {
@@ -322,7 +325,7 @@
 	    $attributes['type'] = 'checkbox';
 	    return html(array('input'=>array('attributes'=>$attributes)));
 	}
-	function radiobutton($attributes = array()) {//returns html for radio button with attributes as array(attr1=>val1,...),checked attribute set to 1 => radio button is checked
+	function radio_button($attributes = array('class'=>'radio_button')) {//returns html for radio button with attributes as array(attr1=>val1,...),checked attribute set to 1 => radio button is checked
 	    if(isset($attributes['checked'])) {
 		    $checked = $attributes['checked'];
 		    if($checked  == 1) {
@@ -334,7 +337,7 @@
 	    $attributes['type'] = 'radio';
 	    return html(array('input'=>array('attributes'=>$attributes)));
 	}
-	function select($options = array(),$attributes = false) {//returns html for select element with options as array options,attributes as attributes(attr1=>val1,...),checked attribute set to 1 => radio button is checked
+	function select($options = array(),$attributes = array('class'=>'select')) {//returns html for select element with options as array options,attributes as attributes(attr1=>val1,...),checked attribute set to 1 => radio button is checked
 	  //options can be either normal array or associative array.If it is normal array innerHTML and value of option elements will be same,otherwise it will be as array(value1=>innerHTML1,...) 
 	   $optionsList = array();
 		$i = 0;
@@ -376,9 +379,8 @@
 		$inputs ='';
 		while($i < $len-1) {
 		    $inputs = $inputs.$args[$i++];
-			
 		}
-		if(isset($args[$len-1])) {
+		if($len>0) {
 		    $attributes = $args[$len-1];
 		    $url = isset($attributes['url'])?$attributes['url']:'';
 			unset($attributes['url']);
@@ -393,15 +395,32 @@
 		}
 		$attributes['action'] = $url;
 		if($submitEnabled) { 
-		    $inputs = $inputs.submit_button(array());
+		    $inputs = $inputs.submit_button();
 		}
 		if($resetEnabled) { 
-		    $inputs = $inputs.reset_button(array());
+		    $inputs = $inputs.reset_button();
 		}
 		$ret = html(array('form'=>array('content'=>$inputs,'attributes'=>$attributes)));
 		return $ret;
 	}
-	
+	function wrap() {//encloses all arguments in  a div tag with class attribute as last argument and returns the html
+	    $args = func_get_args();
+		$i = 0;
+		$len = sizeof($args);
+		if($len>0&&is_array($args[$len-1])) {
+		    $attributes = $args[$len-1];
+			$limit = $len - 1;
+		} else {
+		    $attributes = array();
+			$limit = $len;
+		}
+		$inputs ='';
+		while($i < $limit) {
+		    $inputs = $inputs.$args[$i++];
+	    }
+		return html(array('div'=>array('content'=>$inputs,'attributes'=>$attributes)));
+		
+	}
     function html($tags) {//generate html tags from array named tags 
 	/*tags[tagName] = array [
 	                content => innerHtml,
